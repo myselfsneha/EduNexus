@@ -1,4 +1,4 @@
-users:
+## users:
 
 id
 name
@@ -6,7 +6,7 @@ email
 password
 created_at
 
-students:
+## students:
 
 id
 name

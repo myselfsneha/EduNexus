@@ -1,6 +1,6 @@
-EduNexus
+# EduNexus
 
-Features:
+## Features:
 1. Register
 2. Login
 3. Dashboard
@@ -10,7 +10,7 @@ Features:
 7. Delete Student
 8. Search Students
 
-Future:
+## Future:
 - Attendance
 - Fees
 - Courses
