@@ -75,8 +75,40 @@ const deleteStudent = (req, res) => {
   });
 };
 
+//UPDATE STUDENT 
+
+const updateStudent = (req, res) => {
+  const { id } = req.params;
+  const { name, email, course, year, phone } = req.body;
+
+  const sql = `
+    UPDATE students
+    SET name=?, email=?, course=?, year=?, phone=?
+    WHERE id=?
+  `;
+
+  db.query(
+    sql,
+    [name, email, course, year, phone, id],
+    (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          error: err.message,
+        });
+      }
+
+      res.json({
+        success: true,
+        message: "Student updated successfully",
+      });
+    }
+  );
+};
+
 module.exports = {
   getStudents,
   addStudent,
   deleteStudent,
+  updateStudent,
 };
