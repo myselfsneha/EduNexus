@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function StudentList() {
+function StudentList({ setEditingStudent }) {
   const [students, setStudents] = useState([]);
-
-  useEffect(() => {
-    fetchStudents();
-  }, []);
 
   const fetchStudents = async () => {
     try {
@@ -19,6 +15,10 @@ function StudentList() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
 
   const deleteStudent = async (id) => {
     try {
@@ -48,28 +48,21 @@ function StudentList() {
               marginBottom: "10px",
             }}
           >
-            <p>
-              <strong>Name:</strong> {student.name}
-            </p>
-
-            <p>
-              <strong>Email:</strong> {student.email}
-            </p>
-
-            <p>
-              <strong>Course:</strong> {student.course}
-            </p>
-
-            <p>
-              <strong>Year:</strong> {student.year}
-            </p>
-
-            <p>
-              <strong>Phone:</strong> {student.phone}
-            </p>
+            <p>{student.name}</p>
+            <p>{student.email}</p>
 
             <button
-              onClick={() => deleteStudent(student.id)}
+              onClick={() =>
+                setEditingStudent(student)
+              }
+            >
+              Edit
+            </button>
+
+            <button
+              onClick={() =>
+                deleteStudent(student.id)
+              }
             >
               Delete
             </button>
