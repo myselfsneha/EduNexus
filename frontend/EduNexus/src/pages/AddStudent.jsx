@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import API from "../api";
 
 function AddStudent({
   editingStudent,
@@ -37,16 +37,16 @@ function AddStudent({
 
     try {
       if (editingStudent) {
-        await axios.put(
-          `http://localhost:5000/students/${editingStudent.id}`,
+        await API.put(
+          `/students/${editingStudent.id}`,
           form
         );
 
         alert("Student updated successfully");
         setEditingStudent(null);
       } else {
-        await axios.post(
-          "http://localhost:5000/students",
+        await API.post(
+          "/students",
           form
         );
 
@@ -64,6 +64,7 @@ function AddStudent({
       window.location.reload();
     } catch (error) {
       console.error(error);
+      alert("Something went wrong");
     }
   };
 
@@ -86,6 +87,7 @@ function AddStudent({
           value={form.name}
           onChange={handleChange}
           className="border p-3 rounded-lg"
+          required
         />
 
         <input
@@ -95,6 +97,7 @@ function AddStudent({
           value={form.email}
           onChange={handleChange}
           className="border p-3 rounded-lg"
+          required
         />
 
         <input
@@ -104,6 +107,7 @@ function AddStudent({
           value={form.course}
           onChange={handleChange}
           className="border p-3 rounded-lg"
+          required
         />
 
         <input
@@ -113,6 +117,7 @@ function AddStudent({
           value={form.year}
           onChange={handleChange}
           className="border p-3 rounded-lg"
+          required
         />
 
         <input
@@ -122,6 +127,7 @@ function AddStudent({
           value={form.phone}
           onChange={handleChange}
           className="border p-3 rounded-lg md:col-span-2"
+          required
         />
 
         <button

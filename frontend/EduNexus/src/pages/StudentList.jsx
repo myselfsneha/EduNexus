@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../api";
 
 function StudentList({ setEditingStudent }) {
   const role = localStorage.getItem("role");
@@ -13,10 +13,7 @@ function StudentList({ setEditingStudent }) {
 
   const fetchStudents = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/students"
-      );
-
+      const res = await API.get("/students");
       setStudents(res.data.data);
     } catch (error) {
       console.error(error);
@@ -29,13 +26,11 @@ function StudentList({ setEditingStudent }) {
 
   const deleteStudent = async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/students/${id}`
-      );
-
+      await API.delete(`/students/${id}`);
       fetchStudents();
     } catch (error) {
       console.error(error);
+      alert("Failed to delete student");
     }
   };
 

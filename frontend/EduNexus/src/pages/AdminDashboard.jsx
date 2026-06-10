@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import API from "../api";
 import AddStudent from "./AddStudent";
 import StudentList from "./StudentList";
 
@@ -12,9 +12,7 @@ function AdminDashboard() {
 
   const fetchStudentsCount = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/students"
-      );
+      const res = await API.get("/students");
 
       setStudentCount(res.data.data.length);
     } catch (error) {
@@ -24,7 +22,7 @@ function AdminDashboard() {
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.reload();
+    window.location.href = "/";
   };
 
   return (
@@ -42,7 +40,6 @@ function AdminDashboard() {
         </button>
       </div>
 
-      {/* Dashboard Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div className="bg-blue-500 text-white p-6 rounded-xl shadow">
           <h2 className="text-lg">Total Students</h2>
