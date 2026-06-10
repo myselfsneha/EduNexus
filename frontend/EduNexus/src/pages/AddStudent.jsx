@@ -70,33 +70,33 @@ function AddStudent({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">
+      <h2 className="text-2xl font-bold text-slate-800 mb-6">
         {editingStudent
           ? "Update Student"
-          : "Add Student"}
+          : "Add New Student"}
       </h2>
 
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        className="grid grid-cols-1 md:grid-cols-2 gap-5"
       >
         <input
           type="text"
           name="name"
-          placeholder="Name"
+          placeholder="Student Name"
           value={form.name}
           onChange={handleChange}
-          className="border p-3 rounded-lg"
+          className="border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
         <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Email Address"
           value={form.email}
           onChange={handleChange}
-          className="border p-3 rounded-lg"
+          className="border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
@@ -106,33 +106,33 @@ function AddStudent({
           placeholder="Course"
           value={form.course}
           onChange={handleChange}
-          className="border p-3 rounded-lg"
+          className="border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
         <input
-          type="text"
+          type="number"
           name="year"
           placeholder="Year"
           value={form.year}
           onChange={handleChange}
-          className="border p-3 rounded-lg"
+          className="border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
         <input
           type="text"
           name="phone"
-          placeholder="Phone"
+          placeholder="Phone Number"
           value={form.phone}
           onChange={handleChange}
-          className="border p-3 rounded-lg md:col-span-2"
+          className="border border-gray-300 p-3 rounded-xl md:col-span-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
         <button
           type="submit"
-          className="bg-blue-600 text-white py-3 rounded-lg"
+          className="md:col-span-2 bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-xl font-semibold transition"
         >
           {editingStudent
             ? "Update Student"

@@ -5,16 +5,16 @@ const jwt = require("jsonwebtoken");
 exports.register = async (req, res) => {
   try {
     const {
-  name,
-  email,
-  password,
-  role = "student",
-} = req.body;
+      name,
+      email,
+      password,
+      role = "student",
+    } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const sql =
-  "INSERT INTO users (name,email,password,role) VALUES (?,?,?,?)";
+      "INSERT INTO users (name,email,password,role) VALUES (?,?,?,?)";
 
     db.query(
       sql,
@@ -77,20 +77,40 @@ exports.login = (req, res) => {
       }
 
       const token = jwt.sign(
-  {
-    id: user.id,
-    email: user.email,
-    role: user.role,
-  },
-  process.env.JWT_SECRET,
-  {
-    expiresIn: "1d",
-  }
-);
+        {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1d",
+        }
+      );
 
       res.json({
         success: true,
         token,
+      });
+    }
+  );
+};
+
+exports.getProfile = (req, res) => {
+  db.query(
+    "SELECT id, name, email, role, created_at FROM users WHERE id = ?",
+    [req.user.id],
+    (err, results) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: err.message,
+        });
+      }
+
+      res.json({
+        success: true,
+        user: results[0],
       });
     }
   );
