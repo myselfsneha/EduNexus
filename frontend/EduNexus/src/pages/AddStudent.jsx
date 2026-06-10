@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import API from "../api";
 
 function AddStudent({
@@ -42,7 +43,10 @@ function AddStudent({
           form
         );
 
-        alert("Student updated successfully");
+        toast.success(
+          "Student updated successfully"
+        );
+
         setEditingStudent(null);
       } else {
         await API.post(
@@ -50,7 +54,9 @@ function AddStudent({
           form
         );
 
-        alert("Student added successfully");
+        toast.success(
+          "Student added successfully"
+        );
       }
 
       setForm({
@@ -61,10 +67,16 @@ function AddStudent({
         phone: "",
       });
 
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1200);
+
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+
+      toast.error(
+        "Something went wrong"
+      );
     }
   };
 

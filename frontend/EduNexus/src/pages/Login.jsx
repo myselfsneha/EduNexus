@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import API from "../api";
 
 function Login() {
@@ -26,30 +27,39 @@ function Login() {
         form
       );
 
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem(
+        "token",
+        res.data.token
+      );
 
       const payload = JSON.parse(
         atob(res.data.token.split(".")[1])
       );
 
-      localStorage.setItem("role", payload.role);
+      localStorage.setItem(
+        "role",
+        payload.role
+      );
 
-      alert("Login successful!");
+      toast.success("Login successful!");
 
-      if (payload.role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/student");
-      }
+      setTimeout(() => {
+        if (payload.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/student");
+        }
+      }, 1000);
+
     } catch (error) {
       console.error(error);
-      alert("Login failed!");
+      toast.error("Login failed!");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-4">
+    <div className="max-w-md mx-auto mt-10 p-6 border rounded-lg shadow bg-white">
+      <h2 className="text-2xl font-bold mb-4 text-center">
         Login
       </h2>
 
@@ -79,7 +89,7 @@ function Login() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white p-3 rounded"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded"
         >
           Login
         </button>
