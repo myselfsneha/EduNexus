@@ -1,29 +1,42 @@
-import { useState } from "react";
-import AddStudent from "./pages/AddStudent";
-import StudentList from "./pages/StudentList";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+
+import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
+import StudentDashboard from "./pages/StudentDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [editingStudent, setEditingStudent] = useState(null);
-
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
-      <h1 className="text-4xl font-bold text-blue-600 mb-6">
-        EduNexus Dashboard
-      </h1>
-
-      <div className="bg-white p-6 rounded-xl shadow-md">
-        <AddStudent
-          editingStudent={editingStudent}
-          setEditingStudent={setEditingStudent}
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={<Login />}
         />
-      </div>
 
-      <div className="bg-white p-6 rounded-xl shadow-md mt-6">
-        <StudentList
-          setEditingStudent={setEditingStudent}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRole="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
         />
-      </div>
-    </div>
+
+        <Route
+          path="/student"
+          element={
+            <ProtectedRoute allowedRole="student">
+              <StudentDashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

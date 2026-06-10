@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function StudentList({ setEditingStudent }) {
+  const role = localStorage.getItem("role");
+
+  if (role !== "admin") {
+    return <p>Access denied</p>;
+  }
+
   const [students, setStudents] = useState([]);
+  const [search, setSearch] = useState("");
 
   const fetchStudents = async () => {
     try {
@@ -32,43 +39,76 @@ function StudentList({ setEditingStudent }) {
     }
   };
 
+  const filteredStudents = students.filter(
+    (student) =>
+      student.name
+        .toLowerCase()
+        .includes(search.toLowerCase()) ||
+      student.email
+        .toLowerCase()
+        .includes(search.toLowerCase())
+  );
+
   return (
     <div>
-      <h2>Students List</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        Students List
+      </h2>
 
-      {students.length === 0 ? (
-        <p>No students found.</p>
-      ) : (
-        students.map((student) => (
-          <div
-            key={student.id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "10px",
-              marginBottom: "10px",
-            }}
-          >
-            <p>{student.name}</p>
-            <p>{student.email}</p>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="w-full border p-3 rounded-lg mb-4"
+      />
 
-            <button
-              onClick={() =>
-                setEditingStudent(student)
-              }
-            >
-              Edit
-            </button>
+      <div className="overflow-x-auto">
+        <table className="w-full border">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-3">Name</th>
+              <th className="p-3">Email</th>
+              <th className="p-3">Course</th>
+              <th className="p-3">Year</th>
+              <th className="p-3">Phone</th>
+              <th className="p-3">Actions</th>
+            </tr>
+          </thead>
 
-            <button
-              onClick={() =>
-                deleteStudent(student.id)
-              }
-            >
-              Delete
-            </button>
-          </div>
-        ))
-      )}
+          <tbody>
+            {filteredStudents.map((student) => (
+              <tr key={student.id}>
+                <td className="p-3">{student.name}</td>
+                <td className="p-3">{student.email}</td>
+                <td className="p-3">{student.course}</td>
+                <td className="p-3">{student.year}</td>
+                <td className="p-3">{student.phone}</td>
+
+                <td className="p-3">
+                  <button
+                    onClick={() =>
+                      setEditingStudent(student)
+                    }
+                    className="bg-yellow-500 text-white px-3 py-1 rounded mr-2"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      deleteStudent(student.id)
+                    }
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

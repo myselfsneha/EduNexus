@@ -5,6 +5,9 @@ const cors = require("cors");
 const db = require("./config/db");
 const healthRoutes = require("./routes/healthRoutes");
 const studentRoutes = require("./routes/studentRoutes");
+const authRoutes = require("./routes/authRoutes");
+const authMiddleware = require("./middleware/authMiddleware");
+const adminMiddleware = require("./middleware/adminMiddleware");
 
 
 const app = express();
@@ -13,6 +16,30 @@ app.use(cors());
 app.use(express.json());
 app.use("/health", healthRoutes);
 app.use("/students", studentRoutes);
+app.use("/auth", authRoutes);
+
+app.get(
+  "/profile",
+  authMiddleware,
+  (req, res) => {
+    res.json({
+      success: true,
+      user: req.user,
+    });
+  }
+);
+
+app.get(
+  "/admin",
+  authMiddleware,
+  adminMiddleware,
+  (req, res) => {
+    res.json({
+      success: true,
+      message: "Welcome Admin"
+    });
+  }
+);
 
 app.get("/", (req, res) => {
   res.send("EduNexus API Running");

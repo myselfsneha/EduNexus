@@ -5,6 +5,12 @@ function AddStudent({
   editingStudent,
   setEditingStudent,
 }) {
+  const role = localStorage.getItem("role");
+
+  if (role !== "admin") {
+    return null;
+  }
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -37,15 +43,14 @@ function AddStudent({
         );
 
         alert("Student updated successfully");
-
         setEditingStudent(null);
       } else {
-        const res = await axios.post(
+        await axios.post(
           "http://localhost:5000/students",
           form
         );
 
-        alert(res.data.message);
+        alert("Student added successfully");
       }
 
       setForm({
@@ -55,54 +60,80 @@ function AddStudent({
         year: "",
         phone: "",
       });
+
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        name="name"
-        placeholder="Name"
-        value={form.name}
-        onChange={handleChange}
-      />
-
-      <input
-        name="email"
-        placeholder="Email"
-        value={form.email}
-        onChange={handleChange}
-      />
-
-      <input
-        name="course"
-        placeholder="Course"
-        value={form.course}
-        onChange={handleChange}
-      />
-
-      <input
-        name="year"
-        placeholder="Year"
-        value={form.year}
-        onChange={handleChange}
-      />
-
-      <input
-        name="phone"
-        placeholder="Phone"
-        value={form.phone}
-        onChange={handleChange}
-      />
-
-      <button type="submit">
+    <div>
+      <h2 className="text-2xl font-bold mb-4">
         {editingStudent
           ? "Update Student"
           : "Add Student"}
-      </button>
-    </form>
+      </h2>
+
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={form.name}
+          onChange={handleChange}
+          className="border p-3 rounded-lg"
+        />
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          className="border p-3 rounded-lg"
+        />
+
+        <input
+          type="text"
+          name="course"
+          placeholder="Course"
+          value={form.course}
+          onChange={handleChange}
+          className="border p-3 rounded-lg"
+        />
+
+        <input
+          type="text"
+          name="year"
+          placeholder="Year"
+          value={form.year}
+          onChange={handleChange}
+          className="border p-3 rounded-lg"
+        />
+
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone"
+          value={form.phone}
+          onChange={handleChange}
+          className="border p-3 rounded-lg md:col-span-2"
+        />
+
+        <button
+          type="submit"
+          className="bg-blue-600 text-white py-3 rounded-lg"
+        >
+          {editingStudent
+            ? "Update Student"
+            : "Add Student"}
+        </button>
+      </form>
+    </div>
   );
 }
 
