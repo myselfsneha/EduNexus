@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import API from "../api";
+import {
+  FaUserGraduate,
+  FaEnvelope,
+  FaBook,
+  FaCalendarAlt,
+  FaPhone,
+} from "react-icons/fa";
 
 function AddStudent({
   editingStudent,
@@ -49,10 +56,7 @@ function AddStudent({
 
         setEditingStudent(null);
       } else {
-        await API.post(
-          "/students",
-          form
-        );
+        await API.post("/students", form);
 
         toast.success(
           "Student added successfully"
@@ -69,82 +73,105 @@ function AddStudent({
 
       setTimeout(() => {
         window.location.reload();
-      }, 1200);
+      }, 1000);
 
     } catch (error) {
       console.error(error);
-
-      toast.error(
-        "Something went wrong"
-      );
+      toast.error("Something went wrong");
     }
   };
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-slate-800 mb-6">
-        {editingStudent
-          ? "Update Student"
-          : "Add New Student"}
-      </h2>
+      <div className="mb-6">
+        <h2 className="text-3xl font-bold text-slate-800">
+          {editingStudent
+            ? "✏️ Update Student"
+            : "➕ Add New Student"}
+        </h2>
+
+        <p className="text-gray-500 mt-1">
+          Manage student information quickly.
+        </p>
+      </div>
 
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-1 md:grid-cols-2 gap-5"
       >
-        <input
-          type="text"
-          name="name"
-          placeholder="Student Name"
-          value={form.name}
-          onChange={handleChange}
-          className="border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
+        <div className="relative">
+          <FaUserGraduate className="absolute left-4 top-4 text-gray-400" />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          value={form.email}
-          onChange={handleChange}
-          className="border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
+          <input
+            type="text"
+            name="name"
+            placeholder="Student Name"
+            value={form.name}
+            onChange={handleChange}
+            className="w-full pl-12 border-2 border-gray-200 p-3 rounded-2xl focus:border-blue-500 focus:outline-none"
+            required
+          />
+        </div>
 
-        <input
-          type="text"
-          name="course"
-          placeholder="Course"
-          value={form.course}
-          onChange={handleChange}
-          className="border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
+        <div className="relative">
+          <FaEnvelope className="absolute left-4 top-4 text-gray-400" />
 
-        <input
-          type="number"
-          name="year"
-          placeholder="Year"
-          value={form.year}
-          onChange={handleChange}
-          className="border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full pl-12 border-2 border-gray-200 p-3 rounded-2xl focus:border-blue-500 focus:outline-none"
+            required
+          />
+        </div>
 
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone Number"
-          value={form.phone}
-          onChange={handleChange}
-          className="border border-gray-300 p-3 rounded-xl md:col-span-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
+        <div className="relative">
+          <FaBook className="absolute left-4 top-4 text-gray-400" />
+
+          <input
+            type="text"
+            name="course"
+            placeholder="Course"
+            value={form.course}
+            onChange={handleChange}
+            className="w-full pl-12 border-2 border-gray-200 p-3 rounded-2xl focus:border-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+
+        <div className="relative">
+          <FaCalendarAlt className="absolute left-4 top-4 text-gray-400" />
+
+          <input
+            type="number"
+            name="year"
+            placeholder="Year"
+            value={form.year}
+            onChange={handleChange}
+            className="w-full pl-12 border-2 border-gray-200 p-3 rounded-2xl focus:border-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+
+        <div className="relative md:col-span-2">
+          <FaPhone className="absolute left-4 top-4 text-gray-400" />
+
+          <input
+            type="text"
+            name="phone"
+            placeholder="Phone Number"
+            value={form.phone}
+            onChange={handleChange}
+            className="w-full pl-12 border-2 border-gray-200 p-3 rounded-2xl focus:border-blue-500 focus:outline-none"
+            required
+          />
+        </div>
 
         <button
           type="submit"
-          className="md:col-span-2 bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-xl font-semibold transition"
+          className="md:col-span-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white py-4 rounded-2xl font-bold shadow-lg transition-all hover:scale-[1.02]"
         >
           {editingStudent
             ? "Update Student"
