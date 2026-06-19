@@ -6,7 +6,7 @@ function Attendance() {
   const [attendance, setAttendance] = useState([]);
   const [formData, setFormData] = useState({
     student_id: "",
-    attendance_date: new Date().toISOString().split("T")[0],
+    date: new Date().toISOString().split("T")[0],
     status: "Present",
   });
 
@@ -43,9 +43,7 @@ function Attendance() {
 
       setFormData({
         student_id: "",
-        attendance_date: new Date()
-          .toISOString()
-          .split("T")[0],
+        date: new Date().toISOString().split("T")[0],
         status: "Present",
       });
 
@@ -94,11 +92,11 @@ function Attendance() {
 
           <input
             type="date"
-            value={formData.attendance_date}
+            value={formData.date}
             onChange={(e) =>
               setFormData({
                 ...formData,
-                attendance_date: e.target.value,
+                date: e.target.value,
               })
             }
             className="border p-3 rounded-xl"
@@ -158,7 +156,7 @@ function Attendance() {
                 </td>
 
                 <td className="p-3">
-                  {record.attendance_date}
+                  {record.date}
                 </td>
 
                 <td className="p-3">
