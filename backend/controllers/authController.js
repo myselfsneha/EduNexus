@@ -26,6 +26,8 @@ exports.register = async (req, res) => {
       message: "User registered successfully",
     });
   } catch (error) {
+    console.error("REGISTER ERROR:", error);
+
     res.status(500).json({
       success: false,
       message: error.message,
@@ -34,12 +36,21 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  console.log("LOGIN HIT");
+
   try {
     const { email, password } = req.body;
+
+    console.log("EMAIL:", email);
 
     const [results] = await db.query(
       "SELECT * FROM users WHERE email = ?",
       [email]
+    );
+
+    console.log(
+      "USERS FOUND:",
+      results.length
     );
 
     if (results.length === 0) {
@@ -51,9 +62,19 @@ exports.login = async (req, res) => {
 
     const user = results[0];
 
+    console.log(
+      "CHECKING PASSWORD FOR:",
+      user.email
+    );
+
     const isMatch = await bcrypt.compare(
       password,
       user.password
+    );
+
+    console.log(
+      "PASSWORD MATCH:",
+      isMatch
     );
 
     if (!isMatch) {
@@ -75,11 +96,18 @@ exports.login = async (req, res) => {
       }
     );
 
+    console.log(
+      "LOGIN SUCCESS:",
+      user.email
+    );
+
     res.json({
       success: true,
       token,
     });
   } catch (error) {
+    console.error("LOGIN ERROR:", error);
+
     res.status(500).json({
       success: false,
       message: error.message,
@@ -99,6 +127,8 @@ exports.getProfile = async (req, res) => {
       user: results[0],
     });
   } catch (error) {
+    console.error("PROFILE ERROR:", error);
+
     res.status(500).json({
       success: false,
       message: error.message,
