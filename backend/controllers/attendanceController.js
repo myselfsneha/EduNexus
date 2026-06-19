@@ -2,14 +2,14 @@ const db = require("../config/db");
 
 exports.markAttendance = async (req, res) => {
   try {
-    const { student_id, attendance_date, status } = req.body;
+    const { student_id, date, status } = req.body;
 
     const sql =
-      "INSERT INTO attendance (student_id, attendance_date, status) VALUES (?, ?, ?)";
+      "INSERT INTO attendance (student_id, date, status) VALUES (?, ?, ?)";
 
     await db.query(sql, [
       student_id,
-      attendance_date,
+      date,
       status,
     ]);
 
@@ -28,7 +28,7 @@ exports.markAttendance = async (req, res) => {
 exports.getAttendance = async (req, res) => {
   try {
     const [rows] = await db.query(
-      "SELECT * FROM attendance ORDER BY attendance_date DESC"
+      "SELECT * FROM attendance ORDER BY date DESC"
     );
 
     res.json({
