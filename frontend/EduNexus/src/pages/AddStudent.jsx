@@ -12,6 +12,7 @@ import {
 function AddStudent({
   editingStudent,
   setEditingStudent,
+  fetchStudents,
 }) {
   const role = localStorage.getItem("role");
 
@@ -71,9 +72,7 @@ function AddStudent({
         phone: "",
       });
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      await fetchStudents();
 
     } catch (error) {
       console.error(error);

@@ -1,23 +1,41 @@
 require("dotenv").config();
 require("./config/db");
+
 const express = require("express");
 const cors = require("cors");
+
 const db = require("./config/db");
+
 const healthRoutes = require("./routes/healthRoutes");
 const studentRoutes = require("./routes/studentRoutes");
 const authRoutes = require("./routes/authRoutes");
+const attendanceRoutes = require("./routes/attendanceRoutes");
+const feeRoutes = require("./routes/feeRoutes");
+const courseRoutes = require("./routes/courseRoutes");
+
 const authMiddleware = require("./middleware/authMiddleware");
 const adminMiddleware = require("./middleware/adminMiddleware");
 
-
 const app = express();
 
+/* Middleware */
 app.use(cors());
 app.use(express.json());
-app.use("/health", healthRoutes);
-app.use("/students", studentRoutes);
-app.use("/auth", authRoutes);
 
+/* Routes */
+app.use("/health", healthRoutes);
+app.use("/auth", authRoutes);
+app.use("/students", studentRoutes);
+app.use("/attendance", attendanceRoutes);
+app.use("/fees", feeRoutes);
+app.use("/courses", courseRoutes);
+
+/* Root */
+app.get("/", (req, res) => {
+  res.send("EduNexus API Running");
+});
+
+/* Profile Route */
 app.get(
   "/profile",
   authMiddleware,
@@ -29,6 +47,7 @@ app.get(
   }
 );
 
+/* Admin Route */
 app.get(
   "/admin",
   authMiddleware,
@@ -36,34 +55,36 @@ app.get(
   (req, res) => {
     res.json({
       success: true,
-      message: "Welcome Admin"
+      message: "Welcome Admin",
     });
   }
 );
 
-app.get("/", (req, res) => {
-  res.send("EduNexus API Running");
-});
-
+/* Database Test */
 app.get("/test-db", (req, res) => {
-  db.query("SELECT 1 + 1 AS result", (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+  db.query(
+    "SELECT 1 + 1 AS result",
+    (err, results) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          error: err.message,
+        });
+      }
 
-    res.json(results);
-  });
+      res.json({
+        success: true,
+        data: results,
+      });
+    }
+  );
 });
 
-const PORT = 5000;
+/* Server */
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-app.get("/health", (req, res) => {
-  res.json({
-    success: true,
-    message: "EduNexus API is healthy"
-  });
+  console.log(
+    `🚀 EduNexus Server running on port ${PORT}`
+  );
 });
