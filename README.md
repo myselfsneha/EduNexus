@@ -2,6 +2,8 @@
 
 EduNexus is a full-stack Student Management System designed to streamline student records, attendance tracking, fee management, and course administration through a modern and responsive web interface.
 
+![EduNexus Dashboard](EduNexus.png)
+
 ## 🚀 Live Demo
 
 Frontend: https://edu-nexus-lilac.vercel.app/
