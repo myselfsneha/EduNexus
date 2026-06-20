@@ -1,3 +1,5 @@
+// AdminDashboard.jsx (Part 1)
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
@@ -16,6 +18,7 @@ import {
   FaUserShield,
   FaChartLine,
   FaSignOutAlt,
+  FaTasks,
 } from "react-icons/fa";
 
 function AdminDashboard() {
@@ -30,9 +33,18 @@ function AdminDashboard() {
   const [feeCount, setFeeCount] = useState(0);
   const [courseCount, setCourseCount] = useState(0);
 
+  // Task Manager
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState("");
+
   useEffect(() => {
     fetchStudents();
     fetchDashboardData();
+
+    const savedTasks =
+      JSON.parse(localStorage.getItem("adminTasks")) || [];
+
+    setTasks(savedTasks);
   }, []);
 
   const fetchStudents = async () => {
@@ -48,15 +60,24 @@ function AdminDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      const [attendanceRes, feeRes, courseRes] = await Promise.all([
-        API.get("/attendance"),
-        API.get("/fees"),
-        API.get("/courses"),
-      ]);
+      const [attendanceRes, feeRes, courseRes] =
+        await Promise.all([
+          API.get("/attendance"),
+          API.get("/fees"),
+          API.get("/courses"),
+        ]);
 
-      setAttendanceCount(attendanceRes.data?.data?.length || 0);
-      setFeeCount(feeRes.data?.data?.length || 0);
-      setCourseCount(courseRes.data?.data?.length || 0);
+      setAttendanceCount(
+        attendanceRes.data?.data?.length || 0
+      );
+
+      setFeeCount(
+        feeRes.data?.data?.length || 0
+      );
+
+      setCourseCount(
+        courseRes.data?.data?.length || 0
+      );
     } catch (error) {
       console.error(error);
     }
@@ -65,6 +86,51 @@ function AdminDashboard() {
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = "/";
+  };
+
+  // Task Functions
+  const saveTasks = (updatedTasks) => {
+    setTasks(updatedTasks);
+
+    localStorage.setItem(
+      "adminTasks",
+      JSON.stringify(updatedTasks)
+    );
+  };
+
+  const addTask = () => {
+    if (!newTask.trim()) return;
+
+    const updatedTasks = [
+      ...tasks,
+      {
+        id: Date.now(),
+        text: newTask,
+        completed: false,
+      },
+    ];
+
+    saveTasks(updatedTasks);
+    setNewTask("");
+  };
+
+  const toggleTask = (id) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id
+        ? {
+            ...task,
+            completed: !task.completed,
+          }
+        : task
+    );
+
+    saveTasks(updatedTasks);
+  };
+
+  const deleteTask = (id) => {
+    saveTasks(
+      tasks.filter((task) => task.id !== id)
+    );
   };
 
   const totalCourses = new Set(
@@ -76,13 +142,16 @@ function AdminDashboard() {
   students.forEach((student) => {
     const course = student.course || "Unknown";
 
-    courseCounts[course] = (courseCounts[course] || 0) + 1;
+    courseCounts[course] =
+      (courseCounts[course] || 0) + 1;
   });
 
   const topCourse =
     Object.keys(courseCounts).length > 0
       ? Object.keys(courseCounts).reduce((a, b) =>
-          courseCounts[a] > courseCounts[b] ? a : b
+          courseCounts[a] > courseCounts[b]
+            ? a
+            : b
         )
       : "N/A";
 
@@ -90,7 +159,13 @@ function AdminDashboard() {
     (student) => String(student.year) === "1"
   ).length;
 
-  const recentStudents = [...students].slice(-5).reverse();
+  const recentStudents = [...students]
+    .slice(-5)
+    .reverse();
+
+  const completedTasks = tasks.filter(
+    (task) => task.completed
+  ).length;
 
   return (
     <div
@@ -121,7 +196,7 @@ function AdminDashboard() {
 
       <div className="p-8">
         {/* Hero */}
-        <div className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-3xl p-8 mb-8 shadow-xl">
+        <div className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-3xl p-8 mb-8 shadow-2xl">
           <h2 className="text-4xl font-bold">
             Welcome Back 👋
           </h2>
@@ -131,108 +206,41 @@ function AdminDashboard() {
           </p>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6 hover:scale-105 transition duration-300">
+        {/* Premium Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+          <div className="backdrop-blur-lg bg-white/70 rounded-3xl shadow-xl p-6 hover:scale-105 transition">
             <FaUsers className="text-blue-600 text-3xl mb-3" />
-
-            <h3 className="text-gray-500">
-              Total Students
-            </h3>
-
-            <p className="text-4xl font-bold">
-              {studentCount}
-            </p>
-
-            <p className="text-green-500 text-sm mt-2">
-              Registered Students
-            </p>
+            <h3>Total Students</h3>
+            <p className="text-4xl font-bold">{studentCount}</p>
           </div>
 
-          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6 hover:scale-105 transition duration-300">
+          <div className="backdrop-blur-lg bg-white/70 rounded-3xl shadow-xl p-6 hover:scale-105 transition">
             <FaGraduationCap className="text-green-600 text-3xl mb-3" />
-
-            <h3 className="text-gray-500">
-              Courses
-            </h3>
-
-            <p className="text-4xl font-bold">
-              {totalCourses}
-            </p>
-
-            <p className="text-green-500 text-sm mt-2">
-              Active Programs
-            </p>
+            <h3>Courses</h3>
+            <p className="text-4xl font-bold">{totalCourses}</p>
           </div>
 
-          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6 hover:scale-105 transition duration-300">
+          <div className="backdrop-blur-lg bg-white/70 rounded-3xl shadow-xl p-6 hover:scale-105 transition">
             <FaUserShield className="text-purple-600 text-3xl mb-3" />
-
-            <h3 className="text-gray-500">
-              Top Course
-            </h3>
-
-            <p className="text-2xl font-bold">
-              {topCourse}
-            </p>
-
-            <p className="text-blue-500 text-sm mt-2">
-              Most Popular Course
-            </p>
+            <h3>Top Course</h3>
+            <p className="text-xl font-bold">{topCourse}</p>
           </div>
 
-          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6 hover:scale-105 transition duration-300">
+          <div className="backdrop-blur-lg bg-white/70 rounded-3xl shadow-xl p-6 hover:scale-105 transition">
             <FaChartLine className="text-orange-500 text-3xl mb-3" />
-
-            <h3 className="text-gray-500">
-              First Year Students
-            </h3>
-
-            <p className="text-4xl font-bold">
-              {firstYearStudents}
-            </p>
-
-            <p className="text-orange-500 text-sm mt-2">
-              Current Enrollments
-            </p>
-          </div>
-        </div>
-
-        {/* Dashboard Counts */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6">
-            <h3 className="text-gray-500">
-              Attendance Records
-            </h3>
-
-            <p className="text-4xl font-bold text-blue-600">
-              {attendanceCount}
-            </p>
+            <h3>1st Year</h3>
+            <p className="text-4xl font-bold">{firstYearStudents}</p>
           </div>
 
-          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6">
-            <h3 className="text-gray-500">
-              Fee Records
-            </h3>
-
-            <p className="text-4xl font-bold text-green-600">
-              {feeCount}
-            </p>
-          </div>
-
-          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6">
-            <h3 className="text-gray-500">
-              Available Courses
-            </h3>
-
-            <p className="text-4xl font-bold text-purple-600">
-              {courseCount}
-            </p>
+          <div className="backdrop-blur-lg bg-white/70 rounded-3xl shadow-xl p-6 hover:scale-105 transition">
+            <FaTasks className="text-pink-600 text-3xl mb-3" />
+            <h3>Completed Tasks</h3>
+            <p className="text-4xl font-bold">{completedTasks}</p>
           </div>
         </div>
 
         {/* Navigation */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
           <button
             onClick={() => navigate("/attendance")}
             className="bg-blue-600 text-white p-6 rounded-3xl shadow-xl hover:scale-105 transition"
@@ -256,25 +264,21 @@ function AdminDashboard() {
         </div>
 
         {/* Main Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
-            <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6">
-              <AddStudent
-                editingStudent={editingStudent}
-                setEditingStudent={setEditingStudent}
-                fetchStudents={fetchStudents}
-              />
-            </div>
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="bg-white rounded-3xl shadow-xl p-6">
+            <AddStudent
+              editingStudent={editingStudent}
+              setEditingStudent={setEditingStudent}
+              fetchStudents={fetchStudents}
+            />
           </div>
 
-          <div className="lg:col-span-2">
-            <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6">
-              <StudentList
-                students={students}
-                setEditingStudent={setEditingStudent}
-                fetchStudents={fetchStudents}
-              />
-            </div>
+          <div className="lg:col-span-2 bg-white rounded-3xl shadow-xl p-6">
+            <StudentList
+              students={students}
+              setEditingStudent={setEditingStudent}
+              fetchStudents={fetchStudents}
+            />
           </div>
         </div>
 
@@ -282,32 +286,60 @@ function AdminDashboard() {
         <div className="grid lg:grid-cols-2 gap-8 mt-8">
           <StudentChart students={students} />
 
-          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6">
+          {/* Admin Tasks */}
+          <div className="bg-white rounded-3xl shadow-xl p-6 text-slate-900">
             <h2 className="text-2xl font-bold mb-4">
-              Recent Activity
+              Admin Quick Tasks
             </h2>
 
-            <div className="space-y-4">
-              {recentStudents.length > 0 ? (
-                recentStudents.map((student, index) => (
-                  <div
-                    key={student.id || index}
-                    className="border-l-4 border-green-500 pl-4"
-                  >
-                    <p className="font-medium">
-                      {student.name}
-                    </p>
+            <div className="flex gap-2 mb-4">
+              <input
+                type="text"
+                value={newTask}
+                onChange={(e) =>
+                  setNewTask(e.target.value)
+                }
+                placeholder="Add task..."
+                className="flex-1 border rounded-xl p-3"
+              />
 
-                    <p className="text-gray-500 text-sm">
-                      Added to {student.course}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-500">
-                  No recent activity
-                </p>
-              )}
+              <button
+                onClick={addTask}
+                className="bg-indigo-600 text-white px-5 rounded-xl"
+              >
+                Add
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {tasks.map((task) => (
+                <div
+                  key={task.id}
+                  className="flex justify-between items-center bg-slate-100 p-3 rounded-xl"
+                >
+                  <span
+                    onClick={() =>
+                      toggleTask(task.id)
+                    }
+                    className={`cursor-pointer ${
+                      task.completed
+                        ? "line-through text-gray-500"
+                        : ""
+                    }`}
+                  >
+                    {task.text}
+                  </span>
+
+                  <button
+                    onClick={() =>
+                      deleteTask(task.id)
+                    }
+                    className="text-red-500"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         </div>

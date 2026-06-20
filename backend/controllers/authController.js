@@ -36,21 +36,12 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  console.log("LOGIN HIT");
-
   try {
     const { email, password } = req.body;
-
-    console.log("EMAIL:", email);
 
     const [results] = await db.query(
       "SELECT * FROM users WHERE email = ?",
       [email]
-    );
-
-    console.log(
-      "USERS FOUND:",
-      results.length
     );
 
     if (results.length === 0) {
@@ -62,19 +53,9 @@ exports.login = async (req, res) => {
 
     const user = results[0];
 
-    console.log(
-      "CHECKING PASSWORD FOR:",
-      user.email
-    );
-
     const isMatch = await bcrypt.compare(
       password,
       user.password
-    );
-
-    console.log(
-      "PASSWORD MATCH:",
-      isMatch
     );
 
     if (!isMatch) {
@@ -94,11 +75,6 @@ exports.login = async (req, res) => {
       {
         expiresIn: "1d",
       }
-    );
-
-    console.log(
-      "LOGIN SUCCESS:",
-      user.email
     );
 
     res.json({
@@ -128,6 +104,29 @@ exports.getProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("PROFILE ERROR:", error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    await db.query(
+      "UPDATE users SET name = ?, email = ? WHERE id = ?",
+      [name, email, req.user.id]
+    );
+
+    res.json({
+      success: true,
+      message: "Profile updated successfully",
+    });
+  } catch (error) {
+    console.error("UPDATE PROFILE ERROR:", error);
 
     res.status(500).json({
       success: false,

@@ -5,6 +5,7 @@ const {
   register,
   login,
   getProfile,
+  updateProfile,
 } = require("../controllers/authController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -16,6 +17,12 @@ router.get(
   "/me",
   authMiddleware,
   getProfile
+);
+
+router.put(
+  "/update-profile",
+  authMiddleware,
+  updateProfile
 );
 
 module.exports = router;

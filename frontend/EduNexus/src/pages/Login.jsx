@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import API from "../api";
 import { FaGraduationCap, FaLock, FaEnvelope } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
@@ -124,6 +125,18 @@ function Login() {
             {loading ? "Signing In..." : "Login"}
           </button>
         </form>
+          
+          <div className="text-center mt-4">
+  <p className="text-gray-600">
+    Don't have an account?{" "}
+    <Link
+      to="/signup"
+      className="text-blue-600 font-semibold"
+    >
+      Sign Up
+    </Link>
+  </p>
+</div>
 
         <div className="mt-8 text-center text-sm text-gray-500">
           © 2026 EduNexus Portal

@@ -13,6 +13,7 @@ import Attendance from "./pages/Attendance";
 import Fees from "./pages/Fees";
 import Courses from "./pages/Courses";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Signup from "./pages/Signup";
 
 function NotFound() {
   const navigate = useNavigate();
@@ -67,7 +68,11 @@ function App() {
             )
           }
         />
-
+     
+     <Route
+  path="/signup"
+  element={<Signup />}
+/>
         {/* Admin Dashboard */}
         <Route
           path="/admin"
