@@ -26,8 +26,13 @@ function AdminDashboard() {
   const [students, setStudents] = useState([]);
   const [editingStudent, setEditingStudent] = useState(null);
 
+  const [attendanceCount, setAttendanceCount] = useState(0);
+  const [feeCount, setFeeCount] = useState(0);
+  const [courseCount, setCourseCount] = useState(0);
+
   useEffect(() => {
     fetchStudents();
+    fetchDashboardData();
   }, []);
 
   const fetchStudents = async () => {
@@ -36,6 +41,22 @@ function AdminDashboard() {
 
       setStudents(res.data.data || []);
       setStudentCount(res.data.data?.length || 0);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchDashboardData = async () => {
+    try {
+      const [attendanceRes, feeRes, courseRes] = await Promise.all([
+        API.get("/attendance"),
+        API.get("/fees"),
+        API.get("/courses"),
+      ]);
+
+      setAttendanceCount(attendanceRes.data?.data?.length || 0);
+      setFeeCount(feeRes.data?.data?.length || 0);
+      setCourseCount(courseRes.data?.data?.length || 0);
     } catch (error) {
       console.error(error);
     }
@@ -55,16 +76,13 @@ function AdminDashboard() {
   students.forEach((student) => {
     const course = student.course || "Unknown";
 
-    courseCounts[course] =
-      (courseCounts[course] || 0) + 1;
+    courseCounts[course] = (courseCounts[course] || 0) + 1;
   });
 
   const topCourse =
     Object.keys(courseCounts).length > 0
       ? Object.keys(courseCounts).reduce((a, b) =>
-          courseCounts[a] > courseCounts[b]
-            ? a
-            : b
+          courseCounts[a] > courseCounts[b] ? a : b
         )
       : "N/A";
 
@@ -72,9 +90,7 @@ function AdminDashboard() {
     (student) => String(student.year) === "1"
   ).length;
 
-  const recentStudents = [...students]
-    .slice(-5)
-    .reverse();
+  const recentStudents = [...students].slice(-5).reverse();
 
   return (
     <div
@@ -111,8 +127,7 @@ function AdminDashboard() {
           </h2>
 
           <p className="mt-2 text-blue-100">
-            Manage students, records,
-            analytics and placements.
+            Manage students, records, analytics and placements.
           </p>
         </div>
 
@@ -179,6 +194,39 @@ function AdminDashboard() {
 
             <p className="text-orange-500 text-sm mt-2">
               Current Enrollments
+            </p>
+          </div>
+        </div>
+
+        {/* Dashboard Counts */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6">
+            <h3 className="text-gray-500">
+              Attendance Records
+            </h3>
+
+            <p className="text-4xl font-bold text-blue-600">
+              {attendanceCount}
+            </p>
+          </div>
+
+          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6">
+            <h3 className="text-gray-500">
+              Fee Records
+            </h3>
+
+            <p className="text-4xl font-bold text-green-600">
+              {feeCount}
+            </p>
+          </div>
+
+          <div className="bg-white text-slate-900 rounded-3xl shadow-xl p-6">
+            <h3 className="text-gray-500">
+              Available Courses
+            </h3>
+
+            <p className="text-4xl font-bold text-purple-600">
+              {courseCount}
             </p>
           </div>
         </div>
