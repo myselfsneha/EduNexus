@@ -3,30 +3,41 @@ import API from "../api";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
-  const [course_name, setCourseName] = useState("");
-  const [duration, setDuration] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     fetchCourses();
   }, []);
 
   const fetchCourses = async () => {
-    const res = await API.get("/courses");
-    setCourses(res.data.data || []);
+    try {
+      const res = await API.get("/courses");
+      setCourses(res.data.data || []);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await API.post("/courses", {
-      course_name,
-      duration,
-    });
+    try {
+      await API.post("/courses", {
+        name,
+        description,
+      });
 
-    setCourseName("");
-    setDuration("");
+      setName("");
+      setDescription("");
 
-    fetchCourses();
+      fetchCourses();
+
+      alert("Course added successfully");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to add course");
+    }
   };
 
   return (
@@ -44,20 +55,20 @@ function Courses() {
             type="text"
             placeholder="Course Name"
             className="border p-3 rounded-xl"
-            value={course_name}
+            value={name}
             onChange={(e) =>
-              setCourseName(e.target.value)
+              setName(e.target.value)
             }
             required
           />
 
           <input
             type="text"
-            placeholder="Duration"
+            placeholder="Description"
             className="border p-3 rounded-xl"
-            value={duration}
+            value={description}
             onChange={(e) =>
-              setDuration(e.target.value)
+              setDescription(e.target.value)
             }
           />
 
@@ -72,19 +83,26 @@ function Courses() {
           Courses
         </h2>
 
-        {courses.map((course) => (
-          <div
-            key={course.id}
-            className="border-b py-3"
-          >
-            <h3 className="font-semibold">
-              {course.course_name}
-            </h3>
-            <p className="text-gray-500">
-              {course.duration}
-            </p>
-          </div>
-        ))}
+        {courses.length > 0 ? (
+          courses.map((course) => (
+            <div
+              key={course.id}
+              className="border-b py-3"
+            >
+              <h3 className="font-semibold">
+                {course.name}
+              </h3>
+
+              <p className="text-gray-500">
+                {course.description}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">
+            No courses found
+          </p>
+        )}
       </div>
     </div>
   );
