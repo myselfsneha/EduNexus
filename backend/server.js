@@ -36,16 +36,12 @@ app.get("/", (req, res) => {
 });
 
 /* Profile Route */
-app.get(
-  "/profile",
-  authMiddleware,
-  (req, res) => {
-    res.json({
-      success: true,
-      user: req.user,
-    });
-  }
-);
+app.get("/profile", authMiddleware, (req, res) => {
+  res.json({
+    success: true,
+    user: req.user,
+  });
+});
 
 /* Admin Route */
 app.get(
@@ -61,23 +57,24 @@ app.get(
 );
 
 /* Database Test */
-app.get("/test-db", (req, res) => {
-  db.query(
-    "SELECT 1 + 1 AS result",
-    (err, results) => {
-      if (err) {
-        return res.status(500).json({
-          success: false,
-          error: err.message,
-        });
-      }
+app.get("/test-db", async (req, res) => {
+  try {
+    const [results] = await db.query(
+      "SELECT 1 + 1 AS result"
+    );
 
-      res.json({
-        success: true,
-        data: results,
-      });
-    }
-  );
+    res.json({
+      success: true,
+      data: results,
+    });
+  } catch (err) {
+    console.error("TEST DB ERROR:", err);
+
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
 });
 
 /* Server */
