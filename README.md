@@ -169,11 +169,6 @@ npm run dev
 
 ---
 
-## 📸 Screenshots
-
-Screenshots Coming Soon.
----
-
 ## 🎯 Future Enhancements
 
 - Profile Picture Upload
