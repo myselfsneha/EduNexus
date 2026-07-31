@@ -171,16 +171,7 @@ npm run dev
 
 ## 📸 Screenshots
 
-Add screenshots of:
-
-- Login Page
-- Register Page
-- Student Dashboard
-- Admin Dashboard
-- Attendance Module
-- Fee Management
-- Course Management
-
+Screenshots Coming Soon.
 ---
 
 ## 🎯 Future Enhancements
