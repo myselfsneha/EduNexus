@@ -199,6 +199,11 @@ function AdminDashboard() {
       icon: FaUsers,
       action: () => navigate("/faculty"),
     },
+    {
+      label: "Timetable",
+      icon: FaCalendarAlt,
+      action: () => navigate("/timetables"),
+    },
   ];
 
   const stats = [
@@ -280,6 +285,16 @@ function AdminDashboard() {
       action: () => navigate("/faculty"),
       count: "Open",
       unit: "directory",
+    },
+    {
+      title: "Timetable management",
+      description: "Schedule classes and manage time slots",
+      icon: FaCalendarAlt,
+      accent: "text-emerald-400",
+      iconBg: "bg-emerald-400/10",
+      action: () => navigate("/timetables"),
+      count: "Open",
+      unit: "schedule",
     },
   ];
 

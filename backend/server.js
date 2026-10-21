@@ -13,6 +13,7 @@ const attendanceRoutes = require("./routes/attendanceRoutes");
 const feeRoutes = require("./routes/feeRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const facultyRoutes = require("./routes/facultyRoutes");
+const timetableRoutes = require("./routes/timetableRoutes");
 
 const authMiddleware = require("./middleware/authMiddleware");
 const adminMiddleware = require("./middleware/adminMiddleware");
@@ -33,6 +34,9 @@ app.use("/courses", courseRoutes);
 
 /* Faculty Management — Admin Only */
 app.use("/faculty", authMiddleware, adminMiddleware, facultyRoutes);
+
+/* Timetable Management — Admin Only */
+app.use("/timetables", authMiddleware, adminMiddleware, timetableRoutes);
 
 /* Root */
 app.get("/", (req, res) => {
