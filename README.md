@@ -1,155 +1,150 @@
-# 🎓 EduNexus – Student Management System
+# 🎓 EduNexus — College Management System
 
-EduNexus is a full-stack Student Management System designed to streamline student records, attendance tracking, fee management, and course administration through a modern and responsive web interface.
+EduNexus is a full-stack college management application built to bring common academic administration tasks into one responsive interface. It includes separate admin and student experiences, backed by a Node.js/Express API and MySQL database.
 
-## 🚀 Live Demo
+## 🚀 Live application
 
-Frontend: https://edu-nexus-lilac.vercel.app/
+- **Frontend:** https://edu-nexus-lilac.vercel.app/
+- **Backend service:** https://edunexus-backend-ps02.onrender.com
+- **Repository:** https://github.com/myselfsneha/EduNexus
 
-Backend API: https://edunexus-backend-ps02.onrender.com
+> The backend base URL may not display a page at its root path. Use the deployed frontend to access the application.
 
-## 📌 Features
+## ✨ Features
 
-### Authentication
-- User Registration
-- User Login
-- JWT Authentication
-- Role-Based Access Control
-- Protected Routes
+### Authentication and access
+- User registration and login
+- JWT-based authentication
+- Role-protected application routes
 
-### Student Dashboard
-- Student Profile
-- Attendance Progress
-- Notifications
-- Personal Task Manager
-- Dark Mode Support
+### Admin and academic administration
+- Student record management (create, view, update, delete)
+- Attendance management
+- Fee record and payment-status management
+- Course management
+- Faculty directory and management
+- **Timetable management:** schedule classes by course, subject, faculty, day, time, and classroom
+- Timetable editing and deletion
+- Scheduling-conflict validation in the timetable workflow
+- Dashboard summaries and charts
 
-### Admin Dashboard
-- Add Student
-- Update Student
-- Delete Student
-- View Student Records
-- Dashboard Analytics
-- Recent Activity Section
+### Student experience
+- Student dashboard and profile
+- Attendance progress
+- Notifications and personal task management
+- Dark-mode support
 
-### Attendance Management
-- Mark Attendance
-- View Attendance Records
-- Attendance Statistics
+### Interface
+- Responsive React interface
+- React Router navigation
+- Tailwind CSS styling
+- Dashboard charts and visual summaries
 
-### Fee Management
-- Add Fee Records
-- Track Fee Status
-- View Payment Information
+*Available actions depend on the signed-in user's role and the data configured in the database.*
 
-### Course Management
-- Add Courses
-- Manage Courses
-- View Course Information
+## 🧰 Technology stack
 
-### UI Features
-- Responsive Design
-- Dark Mode
-- Modern Dashboard UI
-- Interactive Charts
-- Glassmorphism Effects
-- Mobile Friendly
+| Layer | Technologies |
+| --- | --- |
+| Frontend | React, Vite, React Router, Axios, Tailwind CSS, React Icons |
+| Backend | Node.js, Express, JWT, bcryptjs |
+| Database | MySQL with mysql2 |
+| Hosting | Vercel (frontend), Render (backend) |
 
----
-
-## 🛠 Tech Stack
-
-### Frontend
-- React.js
-- React Router DOM
-- Axios
-- Tailwind CSS
-- React Icons
-
-### Backend
-- Node.js
-- Express.js
-- JWT Authentication
-- bcryptjs
-
-### Database
-- MySQL
-
-### Deployment
-- Vercel (Frontend)
-- Render (Backend)
-
----
-
-## 📂 Project Structure
+## 📁 Project structure
 
 ```text
 EduNexus/
-│
-├── frontend/
-│   ├── src/
-│   ├── components/
-│   ├── pages/
-│   └── context/
-│
 ├── backend/
-│   ├── controllers/
-│   ├── routes/
-│   ├── middleware/
 │   ├── config/
-│   └── models/
-│
+│   ├── controllers/
+│   ├── middleware/
+│   ├── routes/
+│   └── server.js
+├── frontend/
+│   └── EduNexus/
+│       └── src/
+│           ├── components/
+│           ├── context/
+│           └── pages/
+├── docs/
+├── EduNexus.png
 └── README.md
-👥 Team Members
-Sneha Singh
+```
 
-Tirthi Jhamar
+## 💻 Run locally
 
-Oshi Kanungo
+### Requirements
+- Node.js and npm
+- A MySQL database
+- Git
 
-Shivani Parmar
+### 1. Clone the repository
 
-Khushi Rathod
+```bash
+git clone https://github.com/myselfsneha/EduNexus.git
+cd EduNexus
+```
 
-🔗 Project Links
-GitHub Repository:
-https://github.com/myselfsneha/EduNexus
+### 2. Configure the backend
 
-Live Application:
-https://edu-nexus-lilac.vercel.app/
+```bash
+cd backend
+npm install
+```
 
-Backend API:
-https://edunexus-backend-ps02.onrender.com
+Create a local `.env` file with the database and authentication settings required by the backend configuration. Use your own local credentials; **never commit `.env` or production secrets**.
 
-📸 Screenshots
-Add screenshots here before final submission:
+Start the API:
 
-Login Page
+```bash
+npm run dev
+```
 
-Register Page
+Or run the production start script:
 
-Student Dashboard
+```bash
+npm start
+```
 
-Admin Dashboard
+### 3. Configure and run the frontend
 
-Attendance Module
+In a separate terminal:
 
-Fee Module
+```bash
+cd frontend/EduNexus
+npm install
+npm run dev
+```
 
-Course Module
+Create or update the frontend API base URL configuration for your local backend if needed. For a production build:
 
-🎯 Future Improvements
-Profile Picture Upload
+```bash
+npm run build
+```
 
-Email Notifications
+## 🔐 Security notes
 
-PDF Report Generation
+- Keep database passwords, JWT secrets, and other credentials in environment variables.
+- Do not commit `.env` files or access tokens.
+- Keep administrative API routes protected and validate permissions on the server, not only in the UI.
 
-Student Performance Analytics
+## 👥 Team
 
-Cloud File Storage
+- Sneha Singh
+- Tirthi Jhamar
+- Oshi Kanungo
+- Shivani Parmar
+- Khushi Rathod
 
-Real-Time Dashboard Updates
+## 🔮 Potential future improvements
 
-📄 License
-This project was developed for educational and learning purposes.
+- Email and in-app notification workflows
+- PDF report generation and richer exports
+- Expanded student performance analytics
+- Profile picture and cloud file storage
+- Real-time dashboard updates
+
+## 📄 License
+
+This project was developed for educational and learning purposes. A separate license file should be added if a specific open-source license is selected.
