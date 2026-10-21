@@ -1,9 +1,9 @@
+
 require("dotenv").config();
 require("./config/db");
 
 const express = require("express");
 const cors = require("cors");
-
 const db = require("./config/db");
 
 const healthRoutes = require("./routes/healthRoutes");
@@ -12,6 +12,7 @@ const authRoutes = require("./routes/authRoutes");
 const attendanceRoutes = require("./routes/attendanceRoutes");
 const feeRoutes = require("./routes/feeRoutes");
 const courseRoutes = require("./routes/courseRoutes");
+const facultyRoutes = require("./routes/facultyRoutes");
 
 const authMiddleware = require("./middleware/authMiddleware");
 const adminMiddleware = require("./middleware/adminMiddleware");
@@ -22,13 +23,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-/* Routes */
+/* Public and Existing API Routes */
 app.use("/health", healthRoutes);
 app.use("/auth", authRoutes);
 app.use("/students", studentRoutes);
 app.use("/attendance", attendanceRoutes);
 app.use("/fees", feeRoutes);
 app.use("/courses", courseRoutes);
+
+/* Faculty Management — Admin Only */
+app.use("/faculty", authMiddleware, adminMiddleware, facultyRoutes);
 
 /* Root */
 app.get("/", (req, res) => {
@@ -37,39 +41,21 @@ app.get("/", (req, res) => {
 
 /* Profile Route */
 app.get("/profile", authMiddleware, (req, res) => {
-  res.json({
-    success: true,
-    user: req.user,
-  });
+  res.json({ success: true, user: req.user });
 });
 
 /* Admin Route */
-app.get(
-  "/admin",
-  authMiddleware,
-  adminMiddleware,
-  (req, res) => {
-    res.json({
-      success: true,
-      message: "Welcome Admin",
-    });
-  }
-);
+app.get("/admin", authMiddleware, adminMiddleware, (req, res) => {
+  res.json({ success: true, message: "Welcome Admin" });
+});
 
 /* Database Test */
 app.get("/test-db", async (req, res) => {
   try {
-    const [results] = await db.query(
-      "SELECT 1 + 1 AS result"
-    );
-
-    res.json({
-      success: true,
-      data: results,
-    });
+    const [results] = await db.query("SELECT 1 + 1 AS result");
+    res.json({ success: true, data: results });
   } catch (err) {
     console.error("TEST DB ERROR:", err);
-
     res.status(500).json({
       success: false,
       error: err.message,
@@ -81,7 +67,5 @@ app.get("/test-db", async (req, res) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(
-    `🚀 EduNexus Server running on port ${PORT}`
-  );
+  console.log(`🚀 EduNexus Server running on port ${PORT}`);
 });

@@ -15,6 +15,7 @@ import StudentDashboard from "./pages/StudentDashboard";
 import Attendance from "./pages/Attendance";
 import Fees from "./pages/Fees";
 import Courses from "./pages/Courses";
+import Faculty from "./pages/Faculty";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useTheme } from "./context/ThemeContext";
 
@@ -161,6 +162,16 @@ function App() {
           element={
             <ProtectedRoute allowedRole="admin">
               <Courses />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Faculty Management — Admin Only */}
+        <Route
+          path="/faculty"
+          element={
+            <ProtectedRoute allowedRole="admin">
+              <Faculty />
             </ProtectedRoute>
           }
         />

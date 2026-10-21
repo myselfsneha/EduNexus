@@ -194,6 +194,11 @@ function AdminDashboard() {
       icon: FaBookOpen,
       action: () => navigate("/courses"),
     },
+    {
+      label: "Faculty",
+      icon: FaUsers,
+      action: () => navigate("/faculty"),
+    },
   ];
 
   const stats = [
@@ -265,6 +270,16 @@ function AdminDashboard() {
       action: () => navigate("/courses"),
       count: courseCount,
       unit: "records",
+    },
+    {
+      title: "Faculty management",
+      description: "Manage faculty profiles and departments",
+      icon: FaUsers,
+      accent: "text-cyan-400",
+      iconBg: "bg-cyan-400/10",
+      action: () => navigate("/faculty"),
+      count: "Open",
+      unit: "directory",
     },
   ];
 
@@ -668,7 +683,7 @@ function AdminDashboard() {
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 {quickLinks.map((link) => {
                   const Icon = link.icon;
 
