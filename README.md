@@ -1,87 +1,58 @@
 # 🎓 EduNexus – Student Management System
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-
-A **full-stack Student Management System** designed to simplify student records, attendance tracking, fee management, and course administration through a modern, secure, and responsive web application.
-
----
-
-## 📖 Overview
-
-EduNexus is a collaborative academic project developed to digitize educational institution workflows. It enables administrators and students to manage academic information efficiently through role-based access, authentication, and an interactive dashboard.
-
----
-
-## 📸 Preview
-
-![EduNexus Dashboard](EduNexus.png)
-
----
+EduNexus is a full-stack Student Management System designed to streamline student records, attendance tracking, fee management, and course administration through a modern and responsive web interface.
 
 ## 🚀 Live Demo
 
-🌐 **Frontend**  
-https://edu-nexus-lilac.vercel.app/
+Frontend: https://edu-nexus-lilac.vercel.app/
 
-⚙️ **Backend API**  
-https://edunexus-backend-ps02.onrender.com/
+Backend API: https://edunexus-backend-ps02.onrender.com
 
----
+## 📌 Features
 
-## ✨ Features
-
-### 🔐 Authentication
-
+### Authentication
 - User Registration
-- Secure Login
+- User Login
 - JWT Authentication
 - Role-Based Access Control
 - Protected Routes
 
-### 👨‍🎓 Student Dashboard
-
+### Student Dashboard
 - Student Profile
 - Attendance Progress
 - Notifications
 - Personal Task Manager
 - Dark Mode Support
 
-### 👨‍💼 Admin Dashboard
-
+### Admin Dashboard
 - Add Student
 - Update Student
 - Delete Student
-- Student Records
+- View Student Records
 - Dashboard Analytics
-- Recent Activity
+- Recent Activity Section
 
-### 📅 Attendance Management
-
+### Attendance Management
 - Mark Attendance
-- Attendance Records
+- View Attendance Records
 - Attendance Statistics
 
-### 💰 Fee Management
-
+### Fee Management
 - Add Fee Records
-- Payment Status Tracking
-- Fee Information
+- Track Fee Status
+- View Payment Information
 
-### 📚 Course Management
-
+### Course Management
 - Add Courses
 - Manage Courses
 - View Course Information
 
-### 🎨 User Interface
-
+### UI Features
 - Responsive Design
-- Glassmorphism UI
 - Dark Mode
+- Modern Dashboard UI
 - Interactive Charts
+- Glassmorphism Effects
 - Mobile Friendly
 
 ---
@@ -89,7 +60,6 @@ https://edunexus-backend-ps02.onrender.com/
 ## 🛠 Tech Stack
 
 ### Frontend
-
 - React.js
 - React Router DOM
 - Axios
@@ -97,103 +67,89 @@ https://edunexus-backend-ps02.onrender.com/
 - React Icons
 
 ### Backend
-
 - Node.js
 - Express.js
 - JWT Authentication
 - bcryptjs
 
 ### Database
-
 - MySQL
 
 ### Deployment
-
-- Vercel
-- Render
+- Vercel (Frontend)
+- Render (Backend)
 
 ---
 
 ## 📂 Project Structure
 
 ```text
-EduNexus
+EduNexus/
 │
-├── frontend
-│   ├── src
-│   ├── components
-│   ├── pages
-│   └── context
+├── frontend/
+│   ├── src/
+│   ├── components/
+│   ├── pages/
+│   └── context/
 │
-├── backend
-│   ├── config
-│   ├── controllers
-│   ├── middleware
-│   ├── models
-│   └── routes
+├── backend/
+│   ├── controllers/
+│   ├── routes/
+│   ├── middleware/
+│   ├── config/
+│   └── models/
 │
 └── README.md
-```
+👥 Team Members
+Sneha Singh
 
----
+Tirthi Jhamar
 
-## 🚀 Getting Started
+Oshi Kanungo
 
-### Clone Repository
+Shivani Parmar
 
-```bash
-git clone https://github.com/myselfsneha/EduNexus.git
-```
+Khushi Rathod
 
-### Install Dependencies
+🔗 Project Links
+GitHub Repository:
+https://github.com/myselfsneha/EduNexus
 
-```bash
-npm install
-```
+Live Application:
+https://edu-nexus-lilac.vercel.app/
 
-### Run Development Server
+Backend API:
+https://edunexus-backend-ps02.onrender.com
 
-```bash
-npm run dev
-```
+📸 Screenshots
+Add screenshots here before final submission:
 
----
+Login Page
 
-## 👥 Team Members
+Register Page
 
-- Sneha Singh
-- Tirthi Jhamar
-- Oshi Kanungo
-- Shivani Parmar
-- Khushi Rathod
+Student Dashboard
 
----
+Admin Dashboard
 
-## 🎯 Future Enhancements
+Attendance Module
 
-- Profile Picture Upload
-- Email Notifications
-- PDF Report Generation
-- Student Performance Analytics
-- Cloud File Storage
-- Real-Time Dashboard Updates
+Fee Module
 
----
+Course Module
 
-## 👩‍💻 Author
+🎯 Future Improvements
+Profile Picture Upload
 
-**Sneha Singh**
+Email Notifications
 
-🌐 Portfolio: https://myselfsneha.github.io/sneha-portfolio/
+PDF Report Generation
 
-💼 LinkedIn: https://www.linkedin.com/in/singh--sneha/
+Student Performance Analytics
 
-💻 GitHub: https://github.com/myselfsneha
+Cloud File Storage
 
----
+Real-Time Dashboard Updates
 
-## 📄 License
-
+📄 License
 This project was developed for educational and learning purposes.
-
-⭐ If you found this project helpful, consider giving it a star!
